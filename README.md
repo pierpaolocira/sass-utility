@@ -14,3 +14,5 @@ $lightGray: rgba(204, 204, 204, 0.5);
 Use it (double parentesis are mandatory for a Sass issue: https://github.com/haml/haml/issues/279 )
 
 @include background-color-rgba(($lightGray));
+
+Note: use rgbas.old.css if your compiler don't find several functions.
