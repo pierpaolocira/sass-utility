@@ -1,0 +1,44 @@
+// Provides support for rgba color also for old Internet Explorer versions (>=6; <=8)
+
+@mixin background-color-rgba($fullColor) {
+	$r: red($fullColor);
+	$g: green($fullColor);
+	$b: blue($fullColor);
+	$a: round((alpha($fullColor))*255);
+	$argbHex: decToHex($a)+decToHex($r)+decToHex($g)+decToHex($b);
+	$msFilter: quote("progid:DXImageTransform.Microsoft.gradient(startColorstr=#"+$argbHex+", endColorstr=#"+$argbHex+")");
+	// Web browsers that does not support RGBa
+	background: rgb($r, $g, $b);
+	// IE9 and modern browsers
+	background: $fullColor;
+	.ie8 &, .ie7 &, .ie6 &  {
+		background: none;
+		-ms-filter: $msFilter;
+		filter: unquote($msFilter);
+		zoom: 1;
+		width: 100%;
+	}
+}
+
+@function decToHex($d) {
+	$hexVals: "A" "B" "C" "D" "E" "F";
+    $base: 16;
+    $quotient: $d;
+    $result: "";
+    @if $d == 0 {
+        $result: "00";
+    }
+    @while $quotient != 0 {
+        $mod: $quotient % $base;
+        $quotient: floor($quotient / $base);
+        @if $mod > 9 {
+            $mod: nth($hexVals, $mod - 9);
+        }
+        @if $d < $base {
+            $result: "0" + $mod;
+        } @else {
+            $result: $mod + $result;
+        }
+    }
+    @return $result;
+}
